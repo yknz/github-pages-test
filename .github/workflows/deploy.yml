@@ -19,8 +19,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     # env:
-    #   FB_TOKEN: ${{ secrets.FB_TOKEN }}
-    #   GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/google_application_credentials.json
+      # FB_TOKEN: ${{ secrets.FB_TOKEN }}
+      # GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/google_application_credentials.json
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -56,6 +56,11 @@ jobs:
         run: |
           go install github.com/ma91n/snssharecount/cmd/snssharecount@latest
           go install github.com/ma91n/snssharecount/cmd/ga@latest
+
+      - name: Read JSON from secrets test
+        run: |
+          echo ${{ secrets.SMAPLE_JSON }} > sample.json
+          jq . sample.json
       
       # - name: Update SNS counts
       #   run: |
