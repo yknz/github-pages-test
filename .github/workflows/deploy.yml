@@ -61,7 +61,7 @@ jobs:
         env:
           SAMPLE_JSON: ${{ vars.SMAPLE_JSON }} 
         run: |
-          jq . sns_count_cache.json
+          jq . sample.json
       
       # - name: Update SNS counts
       #   run: |
