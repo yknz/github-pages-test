@@ -8,12 +8,6 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
@@ -72,3 +66,8 @@ jobs:
           git add .
           git commit -m "GitHub Actions deployment"
           git push origin HEAD
+
+      - name: Go package test
+        run: |
+          go install github.com/ma91n/snssharecount/cmd/snssharecount@latest
+          go install github.com/ma91n/snssharecount/cmd/ga@latest
