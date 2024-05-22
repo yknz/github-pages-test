@@ -58,11 +58,15 @@ jobs:
           go install github.com/ma91n/snssharecount/cmd/ga@latest
 
       - name: Read JSON from variables test
-        env:
-          SAMPLE_JSON: ${{ vars.SMAPLE_JSON }} 
         run: |
-          jq . sample.json
-      
+          echo '${{ vars.SAMPLE_JSON }}' > vars_sample.json
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: JSON
+          path: "vars_sample.json" 
+
       # - name: Update SNS counts
       #   run: |
       #     snssharecount > sns_count_cache.json
