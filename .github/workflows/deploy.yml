@@ -18,9 +18,13 @@ jobs:
   # Build job
   build:
     runs-on: ubuntu-latest
+    # env:
+    #   FB_TOKEN: ${{ secrets.FB_TOKEN }}
+    #   GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/google_application_credentials.json
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Detect package manager
         id: detect-package-manager
         run: |
@@ -48,6 +52,16 @@ jobs:
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
 
+      - name: Install Go tools
+        run: |
+          go install github.com/ma91n/snssharecount/cmd/snssharecount@latest
+          go install github.com/ma91n/snssharecount/cmd/ga@latest
+      
+      # - name: Update SNS counts
+      #   run: |
+      #     snssharecount > sns_count_cache.json
+      #     ga > ga_cache.json
+
       - name: Checkout deploy target repository
         uses: actions/checkout@v4
         with:
@@ -64,10 +78,5 @@ jobs:
           git config --local user.name "GitHub Actions"
           git config --local user.email "github-actions@example.com"
           git add .
-          git commit -m "GitHub Actions deployment"
+          git commit -m "deploy from GitHub Actions"
           git push origin HEAD
-
-      - name: Go package test
-        run: |
-          go install github.com/ma91n/snssharecount/cmd/snssharecount@latest
-          go install github.com/ma91n/snssharecount/cmd/ga@latest
