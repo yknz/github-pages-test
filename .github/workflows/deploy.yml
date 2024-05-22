@@ -25,15 +25,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Get last commit message
-        id: get-commit-message
-        run: |
-          {
-            echo 'value<<EOF'
-            echo "commit message"
-            echo EOF
-          } >> "$GITHUB_OUTPUT"
-
       - name: Detect package manager
         id: detect-package-manager
         run: |
@@ -90,11 +81,24 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Download Artifact
         uses: actions/download-artifact@v4
         with:
           name: public
           path: public
+
+      - name: Get last commit message
+        id: get-commit-message
+        run: |
+          {
+            message=`git log -n 1 --pretty=format:"%s"`
+            echo 'value<<EOF'
+            echo $message
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
 
       - name: Checkout deploy target repository
         uses: actions/checkout@v4
